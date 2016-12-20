@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 Reads txt files of all papers and computes tfidf vectors for all papers.
 Dumps results to file tfidf.p

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # use imagemagick to convert 
 # them all to a sequence of thumbnail images
 # requires sudo apt-get install imagemagick

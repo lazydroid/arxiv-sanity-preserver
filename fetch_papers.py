@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 Queries arxiv API and downloads papers (the query is a parameter).
 The script is intended to enrich an existing database pickle (by default db.p),

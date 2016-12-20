@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from sqlite3 import dbapi2 as sqlite3
 import cPickle as pickle
 import numpy as np

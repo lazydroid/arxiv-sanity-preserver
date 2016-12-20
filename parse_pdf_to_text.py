@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 Very simple script that simply iterates over all files pdf/f.pdf
 and create a file txt/f.pdf.txt that contains the raw text, extracted
