@@ -11,14 +11,25 @@ timeout_secs = 10 # after this many seconds we give up on a paper
 numok = 0
 numtot = 0
 db = pickle.load(open('db.p', 'rb'))
-have = set(os.listdir('pdf')) # get list of all pdfs we already have
+#have = set(os.listdir('pdf')) # get list of all pdfs we already have
+
+have = []
+for r, d, files in os.walk('pdf') :
+	for f in files :
+		if f.endswith('.pdf') :
+			have.append(f)
+have = set(have)
+
 for pid,j in db.iteritems():
   
   pdfs = [x['href'] for x in j['links'] if x['type'] == 'application/pdf']
   assert len(pdfs) == 1
   pdf_url = pdfs[0] + '.pdf'
   basename = pdf_url.split('/')[-1]
-  fname = os.path.join('pdf', basename)
+  folder = os.path.join( 'pdf', j['published'][:7])
+  if not os.path.isdir(folder) :
+    os.mkdir(folder)
+  fname = os.path.join( folder, basename)
 
   # try retrieve the pdf
   numtot += 1
