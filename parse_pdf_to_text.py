@@ -54,5 +54,5 @@ for r, d, files in os.walk('pdf') :
 				os.system('touch ' + txt_path) # create empty file, but it's a record of having tried to convert
 
 			time.sleep(0.02) # silly way for allowing for ctrl+c termination
-		else:
-			print 'skipping %s, already exists.' % (pdf_path, )
+#		else:
+#			print 'skipping %s, already exists.' % (pdf_path, )
