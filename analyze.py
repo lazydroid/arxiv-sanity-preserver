@@ -25,7 +25,7 @@ n=0
 for pid,j in db.iteritems():
   n+=1
   idvv = '%sv%d' % (j['_rawid'], j['_version'])
-  fname = os.path.join('txt', idvv) + '.pdf.txt'
+  fname = os.path.join('txt', j['published'][:7], idvv) + '.txt'
   if os.path.isfile(fname): # some pdfs dont translate to txt
     txt = open(fname, 'r').read()
     if len(txt) > 100: # way too short and suspicious
