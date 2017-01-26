@@ -45,7 +45,7 @@ for pid,j in db.iteritems():
       file_size = os.path.getsize( fname )
       if file_size < 10000 :
         print 'too small to be a pdf: %s %d' % (fname, file_size)
-        os.unlink( fname )
+        #os.unlink( fname )
     else:
       print '%s exists, skipping' % (fname, )
     numok+=1
