@@ -50,13 +50,13 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--db_path', dest='db_path', type=str, default='db.p', help='database pickle filename that we enrich')
 	parser.add_argument('--search_query', dest='search_query', type=str,
-				#default='cat:cs.CV+OR+cat:cs.AI+OR+cat:cs.LG+OR+cat:cs.CL+OR+cat:cs.NE+OR+cat:stat.ML',
-				default='cat:cs.CV+OR+cat:cs.AI+OR+cat:cs.LG+OR+cat:cs.CL+OR+cat:cs.NE+OR+cat:stat.ML+cat:cs.NE+OR+cat:cs.CE+OR+cat:cs.CE+OR+cat:cs.RO',
+				default='cat:cs.CV+OR+cat:cs.AI+OR+cat:cs.LG+OR+cat:cs.CL+OR+cat:cs.NE+OR+cat:stat.ML',
+				#default='cat:cs.CV+OR+cat:cs.AI+OR+cat:cs.LG+OR+cat:cs.CL+OR+cat:cs.NE+OR+cat:stat.ML+cat:cs.NE+OR+cat:cs.CE+OR+cat:cs.CE+OR+cat:cs.RO',
 				help='query used for arxiv API. See http://arxiv.org/help/api/user-manual#detailed_examples')
 	parser.add_argument('--start_index', dest='start_index', type=int, default=0, help='0 = most recent API result')
 	parser.add_argument('--max_index', dest='max_index', type=int, default=100000, help='upper bound on paper index we will fetch')
-	parser.add_argument('--results_per_iteration', dest='results_per_iteration', type=int, default=500, help='passed to arxiv API')
-	parser.add_argument('--wait_time', dest='wait_time', type=float, default=5.0, help='lets be gentle to arxiv API (in number of seconds)')
+	parser.add_argument('--results_per_iteration', dest='results_per_iteration', type=int, default=5000, help='passed to arxiv API')
+	parser.add_argument('--wait_time', dest='wait_time', type=float, default=300.0, help='lets be gentle to arxiv API (in number of seconds)')
 	parser.add_argument('--break_on_no_added', dest='break_on_no_added', type=int, default=1, help='break out early if all returned query papers are already in db? 1=yes, 0=no')
 	args = parser.parse_args()
 
