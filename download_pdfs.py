@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import pickle
-import urllib2
+#import urllib2
 import shutil
 import time
 import os
@@ -32,7 +32,7 @@ for r, d, files in os.walk('pdf') :
 			have.append(f)
 have = set(have)
 
-for pid,j in db.iteritems():
+for pid,j in db.items():
 
   pdfs = [x['href'] for x in j['links'] if x['type'] == 'application/pdf']
   assert len(pdfs) == 1
@@ -47,22 +47,22 @@ for pid,j in db.iteritems():
   numtot += 1
   try:
     if not basename in have:
-      print 'fetching %s into %s' % (pdf_url, fname)
+      print( 'fetching %s into %s' % (pdf_url, fname))
       req = urlopen(pdf_url, None, timeout_secs)
       with open(fname, 'wb') as fp:
           shutil.copyfileobj(req, fp)
       time.sleep(0.1 + random.uniform(0,0.2))
       file_size = os.path.getsize( fname )
       if file_size < 10000 :
-        print 'too small to be a pdf: %s %d' % (fname, file_size)
+        print( 'too small to be a pdf: %s %d' % (fname, file_size))
         #os.unlink( fname )
     else:
-      print '%s exists, skipping' % (fname, )
+      print( '%s exists, skipping' % (fname, ))
     numok+=1
-  except Exception, e:
-    print 'error downloading: ', pdf_url
-    print e
-  
-  print '%d/%d of %d downloaded ok.' % (numok, numtot, len(db))
-  
-print 'final number of papers downloaded okay: %d/%d' % (numok, len(db))
+  except Exception as e:
+    print( 'error downloading: ', pdf_url)
+    print( e)
+
+  print( '%d/%d of %d downloaded ok.' % (numok, numtot, len(db)))
+
+print( 'final number of papers downloaded okay: %d/%d' % (numok, len(db)))
