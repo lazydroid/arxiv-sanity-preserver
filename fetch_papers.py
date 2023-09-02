@@ -91,8 +91,26 @@ if __name__ == "__main__":
 
 		print( "Results %i - %i" % (i,i+args.results_per_iteration))
 		query = 'search_query=%s&sortBy=lastUpdatedDate&start=%i&max_results=%i' % (args.search_query, i, args.results_per_iteration)
-		response = urlopen(base_url+query).read()
-		parse = feedparser.parse(response)
+
+		for retry in range(1,10):
+			with urlopen(base_url+query) as furl:
+				response = furl.read()
+			parse = feedparser.parse(response)
+
+			if len(parse.entries) != 0:
+				break
+
+			print( 'Received no results from arxiv. Rate limiting? Exiting. Restart later maybe.')
+			print( response)
+
+			wait_time = args.wait_time * retry
+			print( 'Sleeping for %i seconds' % wait_time)
+			try:
+				time.sleep(wait_time + random.uniform(0, 3))
+			except KeyboardInterrupt:
+				print('Got Ctrl/C, closing...')
+				break
+
 		num_added = 0
 		num_skipped = 0
 		for e in parse.entries:
@@ -115,11 +133,6 @@ if __name__ == "__main__":
 		# print some information
 		print( 'Added %d papers, already had %d.' % (num_added, num_skipped))
 
-		if len(parse.entries) == 0:
-			print( 'Received no results from arxiv. Rate limiting? Exiting. Restart later maybe.')
-			print( response)
-			break
-
 		if num_added == 0 and args.break_on_no_added == 1:
 			print( 'No new papers were added. Assuming no new papers exist. Exiting.')
 			break
@@ -134,3 +147,52 @@ if __name__ == "__main__":
 	# save the database before we quit
 	print( 'saving database with %d papers to %s' % (len(db), args.db_path))
 	utils.safe_pickle_dump(db, args.db_path)
+
+''' SAMPLE PARSER FEED (empty)
+>>> print( json.dumps(feedparser.parse(aaa), indent='\t'))
+{
+	"bozo": false,
+	"entries": [],
+	"feed": {
+		"links": [
+			{
+				"href": "http://arxiv.org/api/query?search_query%3Dcat%3Acs.CV%20OR%20cat%3Acs.AI%20OR%20cat%3Acs.LG%20OR%20cat%3Acs.CL%20OR%20cat%3Acs.NE%20OR%20cat%3Astat.ML%26id_list%3D%26start%3D50000%26max_results%3D1000",
+				"rel": "self",
+				"type": "application/atom+xml"
+			}
+		],
+		"title": "ArXiv Query: search_query=cat:cs.CV OR cat:cs.AI OR cat:cs.LG OR cat:cs.CL OR cat:cs.NE OR cat:stat.ML&amp;id_list=&amp;start=50000&amp;max_results=1000",
+		"title_detail": {
+			"type": "text/html",
+			"language": null,
+			"base": "",
+			"value": "ArXiv Query: search_query=cat:cs.CV OR cat:cs.AI OR cat:cs.LG OR cat:cs.CL OR cat:cs.NE OR cat:stat.ML&amp;id_list=&amp;start=50000&amp;max_results=1000"
+		},
+		"id": "http://arxiv.org/api/428wrV1cf7z+M8yfqQxxMCo2RE0",
+		"guidislink": true,
+		"link": "http://arxiv.org/api/428wrV1cf7z+M8yfqQxxMCo2RE0",
+		"updated": "2023-09-02T00:00:00-04:00",
+		"updated_parsed": [
+			2023,
+			9,
+			2,
+			4,
+			0,
+			0,
+			5,
+			245,
+			0
+		],
+		"opensearch_totalresults": "297445",
+		"opensearch_startindex": "50000",
+		"opensearch_itemsperpage": "1000"
+	},
+	"headers": {},
+	"encoding": "utf-8",
+	"version": "atom10",
+	"namespaces": {
+		"": "http://www.w3.org/2005/Atom",
+		"opensearch": "http://a9.com/-/spec/opensearch/1.1/"
+	}
+}
+'''
