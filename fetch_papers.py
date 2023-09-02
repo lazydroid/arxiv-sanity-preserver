@@ -114,8 +114,12 @@ if __name__ == "__main__":
 			print 'No new papers were added. Assuming no new papers exist. Exiting.'
 			break
 
-		print 'Sleeping for %i seconds' % (args.wait_time , )
-		time.sleep(args.wait_time + random.uniform(0, 3))
+		print( 'Sleeping for %i seconds' % (args.wait_time , ))
+		try:
+			time.sleep(args.wait_time + random.uniform(0, 3))
+		except KeyboardInterrupt:
+			print('Got Ctrl/C, closing...')
+			break
 
 	# save the database before we quit
 	print 'saving database with %d papers to %s' % (len(db), args.db_path)
