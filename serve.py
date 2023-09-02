@@ -6,7 +6,7 @@ from flask import Flask, request, session, url_for, redirect, \
      render_template, abort, g, flash, _app_ctx_stack
 from flask_limiter import Limiter
 from werkzeug import check_password_hash, generate_password_hash
-import cPickle as pickle
+import pickle
 import numpy as np
 import json
 import time

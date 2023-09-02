@@ -1,11 +1,21 @@
 #!/usr/bin/env python
 
-import cPickle as pickle
+import pickle
 import urllib2
 import shutil
 import time
 import os
 import random
+
+import sys
+
+if sys.version_info[0] == 3:
+	from urllib.request import urlopen
+else:
+	# Not Python 3 - today, it is most likely to be Python 2
+	# But note that this might need an update when Python 4
+	# might be around one day
+	from urllib import urlopen
 
 os.system('mkdir -p pdf') # ?
 
@@ -23,7 +33,7 @@ for r, d, files in os.walk('pdf') :
 have = set(have)
 
 for pid,j in db.iteritems():
-  
+
   pdfs = [x['href'] for x in j['links'] if x['type'] == 'application/pdf']
   assert len(pdfs) == 1
   pdf_url = pdfs[0] + '.pdf'
@@ -38,7 +48,7 @@ for pid,j in db.iteritems():
   try:
     if not basename in have:
       print 'fetching %s into %s' % (pdf_url, fname)
-      req = urllib2.urlopen(pdf_url, None, timeout_secs)
+      req = urlopen(pdf_url, None, timeout_secs)
       with open(fname, 'wb') as fp:
           shutil.copyfileobj(req, fp)
       time.sleep(0.1 + random.uniform(0,0.2))

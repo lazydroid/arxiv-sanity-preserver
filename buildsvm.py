@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from sqlite3 import dbapi2 as sqlite3
-import cPickle as pickle
+import pickle
 import numpy as np
 import json
 import time

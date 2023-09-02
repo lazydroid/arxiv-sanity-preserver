@@ -5,7 +5,7 @@ Reads txt files of all papers and computes tfidf vectors for all papers.
 Dumps results to file tfidf.p
 """
 from sklearn.feature_extraction.text import TfidfVectorizer
-import cPickle as pickle
+import pickle
 import urllib2
 import shutil
 import time
