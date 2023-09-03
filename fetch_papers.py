@@ -80,8 +80,9 @@ if __name__ == "__main__":
 	except Exception as e:
 		print( 'error loading existing database:')
 		print( e )
-		print( 'starting from an empty database')
-		db = {}
+		sys.exit(1)
+		#print( 'starting from an empty database')
+		#db = {}
 
 	# -----------------------------------------------------------------------------
 	# main loop where we fetch the new results
