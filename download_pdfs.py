@@ -62,6 +62,7 @@ for pid,j in db.items():
   except Exception as e:
     print( 'error downloading: ', pdf_url)
     print( e)
+    break
 
   print( '%d/%d of %d downloaded ok.' % (numok, numtot, len(db)))
 
