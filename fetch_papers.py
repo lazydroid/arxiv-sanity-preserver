@@ -56,6 +56,8 @@ def parse_arxiv_url(url):
 
 if __name__ == "__main__":
 
+	# last in cs.CV: 2021-05-20T15:24:42Z (50000)
+
 	# parse input arguments
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--db_path', dest='db_path', type=str, default='db.p', help='database pickle filename that we enrich')
@@ -88,10 +90,12 @@ if __name__ == "__main__":
 	# main loop where we fetch the new results
 	print( 'database has %d entries at start' % (len(db), ))
 	num_added_total = 0
-	for i in range(args.start_index, args.max_index, args.results_per_iteration):
+	current_index = args.start_index
+#	for i in range(args.start_index, args.max_index, args.results_per_iteration):
+	while True:
 
-		print( "Results %i - %i" % (i,i+args.results_per_iteration))
-		query = 'search_query=%s&sortBy=lastUpdatedDate&start=%i&max_results=%i' % (args.search_query, i, args.results_per_iteration)
+		print( "Results %i - %i" % (current_index,current_index+args.results_per_iteration))
+		query = 'search_query=%s&sortBy=lastUpdatedDate&start=%i&max_results=%i' % (args.search_query, current_index, args.results_per_iteration)
 
 		for retry in range(1,10):
 			with urlopen(base_url+query) as furl:
@@ -144,6 +148,9 @@ if __name__ == "__main__":
 		except KeyboardInterrupt:
 			print('Got Ctrl/C, closing...')
 			break
+
+		current_index += len(parse.entries)
+		if current_index > args.max_index: break
 
 	# save the database before we quit
 	print( 'saving database with %d papers to %s' % (len(db), args.db_path))
