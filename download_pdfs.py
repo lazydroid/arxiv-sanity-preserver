@@ -32,6 +32,14 @@ for r, d, files in os.walk('pdf') :
 			have.append(f)
 have = set(have)
 
+possible_errors = [
+	'timed out',
+	'HTTP Error 403: Forbidden',
+	'HTTP Error 404: Not Found',
+	'HTTP Error 500: Internal Server Error',
+	'HTTP Error 501: First fragment: Transfer-Encoding not supported',
+]
+
 for pid,j in db.items():
 
   pdfs = [x['href'] for x in j['links'] if x['type'] == 'application/pdf']
@@ -62,6 +70,8 @@ for pid,j in db.items():
   except Exception as e:
     print( 'error downloading: ', pdf_url)
     print( e)
+    if str(e) in possible_errors:
+      continue
     break
 
   print( '%d/%d of %d downloaded ok.' % (numok, numtot, len(db)))
