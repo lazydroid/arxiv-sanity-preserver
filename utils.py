@@ -63,4 +63,4 @@ def open_atomic(filepath, *args, **kwargs):
 
 def safe_pickle_dump(obj, fname):
     with open_atomic(fname, 'wb') as f:
-        pickle.dump(obj, f, 4)
+        pickle.dump(obj, f, 2)
