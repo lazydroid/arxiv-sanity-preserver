@@ -98,8 +98,10 @@ if __name__ == "__main__":
 		query = 'search_query=%s&sortBy=lastUpdatedDate&start=%i&max_results=%i' % (args.search_query, current_index, args.results_per_iteration)
 
 		for retry in range(1,10):
-			with urlopen(base_url+query) as furl:
-				response = furl.read()
+#			with urlopen(base_url+query) as furl:
+#				response = furl.read()
+			furl = urlopen(base_url+query)
+			response = furl.read()
 			parse = feedparser.parse(response)
 
 			if len(parse.entries) != 0:
