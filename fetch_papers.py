@@ -87,6 +87,8 @@ if __name__ == "__main__":
 		#print( 'starting from an empty database')
 		#db = {}
 
+	original_db_size = len(db)
+
 	# -----------------------------------------------------------------------------
 	# main loop where we fetch the new results
 	print( 'database has %d entries at start' % (len(db), ))
@@ -156,8 +158,11 @@ if __name__ == "__main__":
 		if current_index >= args.max_index: break
 
 	# save the database before we quit
-	print( 'saving database with %d papers to %s' % (len(db), args.db_path))
-	utils.safe_pickle_dump(db, args.db_path)
+	if original_db_size != len(db):
+		print( 'saving database with %d papers to %s' % (len(db), args.db_path))
+		utils.safe_pickle_dump(db, args.db_path)
+	else:
+		print( 'database size did not change %d -> %d, skipping db save' % (original_db_size, len(db)))
 
 ''' SAMPLE PARSER FEED (empty)
 >>> print( json.dumps(feedparser.parse(aaa), indent='\t'))
