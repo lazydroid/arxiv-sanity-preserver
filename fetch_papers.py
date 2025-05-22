@@ -109,6 +109,14 @@ if __name__ == "__main__":
 			response = furl.read()
 			parse = feedparser.parse(response)
 
+			try:
+				totalResults = int(parse['feed']['opensearch_totalresults'])
+				totalResults = min( totalResults, args.max_index)
+				print 'Total results:', totalResults
+			except:
+				totalResults = args.max_index
+				print 'Unable to parse total results, default to:', totalResults
+
 			if len(parse.entries) != 0:
 				break
 
@@ -157,7 +165,7 @@ if __name__ == "__main__":
 			break
 
 		current_index += len(parse.entries)
-		if current_index >= args.max_index: break
+		if current_index >= totalResults: break
 
 	# save the database before we quit
 	if original_db_size != len(db):
